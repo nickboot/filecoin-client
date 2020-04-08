@@ -1,6 +1,4 @@
 import * as Middleware from '~/common/middleware';
-import * as Data from '~/common/data';
-import * as Routes from '~/routes';
 
 import express from 'express';
 import next from 'next';
@@ -28,34 +26,8 @@ app.prepare().then(() => {
     })
   );
 
-  server.post('/api/sign-in', async (req, res) => {
-    return await Routes.api.signIn(req, res);
-  });
-
-  server.get('/', async (req, res) => {
-    return await Routes.signIn(req, res, app);
-  });
-
-  server.get('/sign-in-confirm', async (req, res) => {
-    return await Routes.signInConfirm(req, res, app);
-  });
-
-  server.get(
-    '/sign-in-success',
-    Middleware.RequireCookieAuthentication,
-    async (req, res) => {
-      return await Routes.signInSuccess(req, res, app);
-    }
-  );
-
-  server.get('/sign-in-error', async (req, res) => {
-    const { viewer } = await Data.getViewer(req);
-    app.render(req, res, '/sign-in-error', { viewer });
-  });
-
-  server.get('/sign-out', async (req, res) => {
-    const { viewer } = await Data.getViewer(req);
-    app.render(req, res, '/sign-out', { viewer });
+  server.get('/health', async (req, res) => {
+    res.send('ok');
   });
 
   server.get('*', async (req, res) => {
@@ -67,6 +39,6 @@ app.prepare().then(() => {
       throw err;
     }
 
-    console.log(`[ filecoin pinning server ] http://localhost:${port}`);
+    console.log(`[ prototype ] http://localhost:${port}`);
   });
 });
